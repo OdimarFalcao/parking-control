@@ -1,7 +1,6 @@
 package com.api.parkingcontrol.models;
 
 import javax.persistence.*;
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -33,6 +32,20 @@ public class ParkingSpotModel implements Serializable {
     @Column(nullable = false, length = 30)
 
     private String block;
+
+    public ParkingSpotModel() {
+        this.id = id;
+        this.parkingSpotNumber = parkingSpotNumber;
+        this.licensePlateCar = licensePlateCar;
+        this.brandCar = brandCar;
+        this.modelCar = modelCar;
+        this.colorCar = colorCar;
+        this.registrationDate = registrationDate;
+        this.responsibleName = responsibleName;
+        this.apartment = apartment;
+        this.block = block;
+    }
+
     public UUID getId() {
         return id;
     }

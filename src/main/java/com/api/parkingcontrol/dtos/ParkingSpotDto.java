@@ -10,7 +10,7 @@ public class ParkingSpotDto {
     @NotBlank
     @Size(max = 7)
     private String licensePlateCar;
-    @NotBlank
+    @NotBlank(message = "O campo parkingSpotNumber vazio ou nulo")
     private String brandCar;
     @NotBlank
     private String modelCar;
