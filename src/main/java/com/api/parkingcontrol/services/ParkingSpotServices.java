@@ -45,4 +45,16 @@ public class ParkingSpotServices {
     public void delete(ParkingSpotModel parkingSpotModel) {
         parkingSpotRepository.delete(parkingSpotModel);
     }
+
+    public List<ParkingSpotModel> findAllParkingSpot() {
+        return parkingSpotRepository.findAllQuery();
+    }
+
+    public List<String> findAllBlock() {
+        return parkingSpotRepository.findAllQueryBlock();
+    }
+
+    public List<ParkingSpotModel> findAllParkingSpotByBlock(String block) {
+        return parkingSpotRepository.findAllParkingSpot(block);
+    }
 }
