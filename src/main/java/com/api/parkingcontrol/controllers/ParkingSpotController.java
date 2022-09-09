@@ -3,6 +3,7 @@ import com.api.parkingcontrol.dtos.ParkingSpotDto;
 import com.api.parkingcontrol.models.ParkingSpotModel;
 import com.api.parkingcontrol.services.ParkingSpotServices;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,26 @@ import java.util.UUID;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/parking-spot")
-
 public class ParkingSpotController {
     final ParkingSpotServices parkingSpotServices;
 
     public ParkingSpotController(ParkingSpotServices parkingSpotServices) {
         this.parkingSpotServices = parkingSpotServices;
+    }
+    @GetMapping("/list")
+    public List<ParkingSpotModel> findAllParkingSpot() {
+       return  parkingSpotServices.findAllParkingSpot();
+    }
+
+    @GetMapping("/list/{block}")
+    public List<ParkingSpotModel> findAllParkingSpotBlock(@PathVariable("block") String block) {
+        return  parkingSpotServices.findAllParkingSpotByBlock(block);
+    }
+
+    @GetMapping("/listBlock")
+    public List<String> findAllBlock() {
+
+        return  parkingSpotServices.findAllBlock();
     }
 
     @PostMapping
@@ -83,4 +98,8 @@ public class ParkingSpotController {
         parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.save(parkingSpotModel));
     }
+
+
+
+
 }
