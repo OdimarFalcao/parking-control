@@ -50,12 +50,16 @@ public class ParkingSpotController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneParkingSpot(@PathVariable(value = "id") UUID id) {
-        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
-        if (!parkingSpotModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found.");
+        try {
+            Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
+            if (!parkingSpotModelOptional.isPresent()) {
+                throw new ParkingSpotModelNotFoundException("Parking Spot not found.");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
         }
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
-
     }
 
     @DeleteMapping("/{id}")
