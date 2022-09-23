@@ -1,10 +1,12 @@
 package com.api.parkingcontrol.repositores;
 
 import com.api.parkingcontrol.models.ParkingSpotModel;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +28,7 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpotModel, U
 
     @Query(nativeQuery = true, value = "SELECT  *FROM TB_PARKING_SPOT WHERE block=?1 ")
     List<ParkingSpotModel> findAllParkingSpot(String block);
+
 
 
 }
