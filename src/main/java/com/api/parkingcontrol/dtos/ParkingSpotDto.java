@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class ParkingSpotDto {
-    @NotBlank
+    @NotBlank (message = "ParkingSpotNumber não pode estar em branco")
     private String parkingSpotNumber;
     @NotBlank
     @Size(max = 7)

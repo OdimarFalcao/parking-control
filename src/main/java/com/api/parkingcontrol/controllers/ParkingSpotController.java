@@ -1,5 +1,6 @@
 package com.api.parkingcontrol.controllers;
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
+import com.api.parkingcontrol.exception.BadRequestException;
 import com.api.parkingcontrol.models.ParkingSpotModel;
 import com.api.parkingcontrol.services.ParkingSpotServices;
 import org.springframework.beans.BeanUtils;
@@ -79,14 +80,18 @@ public class ParkingSpotController {
             "")
     public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
                                                     @RequestBody @Valid ParkingSpotDto parkingSpotDto){
-        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
-        if (!parkingSpotModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found.");
-        }
-        var parkingSpotModel = new ParkingSpotModel();
-        BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-        parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
-        parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.save(parkingSpotModel));
+        try {
+            Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
+//        if (!parkingSpotModelOptional.isPresent()) {
+//            return ResponseEntity.ok(parkingSpotServices.findById(id));
+//        }
+            var parkingSpotModel = new ParkingSpotModel();
+            BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
+            parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
+            parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
+            return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.save(parkingSpotModel));
+        } catch(BadRequestException ex){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+            }
     }
 }

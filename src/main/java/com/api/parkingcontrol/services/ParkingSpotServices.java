@@ -1,5 +1,6 @@
 package com.api.parkingcontrol.services;
 
+import com.api.parkingcontrol.exception.BadRequestException;
 import com.api.parkingcontrol.models.ParkingSpotModel;
 import com.api.parkingcontrol.repositores.ParkingSpotRepository;
 import org.springframework.data.domain.Page;
@@ -40,8 +41,10 @@ public class ParkingSpotServices {
     }
 
     public Optional<ParkingSpotModel> findById(UUID id) {
-        return parkingSpotRepository.findById(id);
+        return Optional.ofNullable(parkingSpotRepository.findById(id).
+                orElseThrow(() -> new BadRequestException("Parking Spot Model Not Found")));
     }
+
 
     @Transactional
     public void delete(ParkingSpotModel parkingSpotModel) {

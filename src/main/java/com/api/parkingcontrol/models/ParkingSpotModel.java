@@ -1,6 +1,7 @@
 package com.api.parkingcontrol.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
