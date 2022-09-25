@@ -1,26 +1,27 @@
 package com.api.parkingcontrol.dtos;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class ParkingSpotDto {
-    @NotBlank (message = "ParkingSpotNumber não pode estar em branco")
+    @NotBlank(message = "O campo não pode ser vazio ou nulo")
     private String parkingSpotNumber;
-    @NotBlank
+    @NotBlank(message = "O campo não pode ser vazio ou nulo")
     @Size(max = 7)
     private String licensePlateCar;
-    @NotBlank(message = "O campo parkingSpotNumber vazio ou nulo")
+    @NotBlank(message = "O campo não pode ser vazio ou nulo")
     private String brandCar;
-    @NotBlank
+    @NotBlank(message = "O campo não pode ser vazio ou nulo")
     private String modelCar;
-    @NotBlank
+    @NotBlank(message = "O campo não pode ser vazio ou nulo")
     private String colorCar;
-    @NotBlank
+    @NotBlank(message = "O campo não pode ser vazio ou nulo")
     private String responsibleName;
-    @NotBlank
+    @NotBlank(message = "O campo não pode ser vazio ou nulo")
     private String apartment;
-    @NotBlank
+    @NotBlank(message = "O campo não pode ser vazio ou nulo")
     private String block;
 
     public String getParkingSpotNumber() {

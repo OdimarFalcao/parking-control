@@ -32,6 +32,7 @@ public class ParkingSpotController {
     @PostMapping
     public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
 
+
         if (parkingSpotServices.existsByLicensePlateCar(parkingSpotDto.getLicensePlateCar())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: License Plate Car is already in use !");
         }
@@ -68,9 +69,9 @@ public class ParkingSpotController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> DeleteParkingSpot(@PathVariable(value= "id")UUID id){
         Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
-        if(!parkingSpotModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found!");
-        }
+//        if(!parkingSpotModelOptional.isPresent()){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found!");
+//        }
         parkingSpotServices.delete(parkingSpotModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Parking Spot delete successfully");
 

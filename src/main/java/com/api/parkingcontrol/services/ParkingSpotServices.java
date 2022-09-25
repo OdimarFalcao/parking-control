@@ -42,7 +42,7 @@ public class ParkingSpotServices {
 
     public Optional<ParkingSpotModel> findById(UUID id) {
         return Optional.ofNullable(parkingSpotRepository.findById(id).
-                orElseThrow(() -> new BadRequestException("Parking Spot Model Not Found")));
+                orElseThrow(() -> new BadRequestException("Parking Spot Model Not Found!")));
     }
 
 
