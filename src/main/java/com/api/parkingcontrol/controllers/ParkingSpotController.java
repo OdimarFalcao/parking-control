@@ -31,48 +31,28 @@ public class ParkingSpotController {
 
     @PostMapping
     public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
-
-
-        if (parkingSpotServices.existsByLicensePlateCar(parkingSpotDto.getLicensePlateCar())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: License Plate Car is already in use !");
-        }
-        if (parkingSpotServices.existsByParkingSpotNumber(parkingSpotDto.getParkingSpotNumber())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Parking Spot Number is already in use !");
-        }
-        if (parkingSpotServices.existsByApartmentAndBlock(parkingSpotDto.getApartment(), parkingSpotDto.getBlock())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Parking Spot already registered for this apartment/block !");
-        }
-        var parkingSpotModel = new ParkingSpotModel();
-        BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-        parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
-        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotServices.save(parkingSpotModel));
+        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotServices.save(parkingSpotDto));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+    public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.findAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneParkingSpot(@PathVariable(value = "id") UUID id) {
-        try {
-            Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
-            if (parkingSpotModelOptional.isEmpty()) {
-                throw new ParkingSpotModelNotFoundException("Parking Spot not found.");
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
-        } catch (Exception ex) {
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        }
+    public ResponseEntity<ParkingSpotModel> getOneParkingSpot(@PathVariable(value = "id") UUID id) {
+
+        return ResponseEntity.ok(parkingSpotServices.findById(id));
+
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> DeleteParkingSpot(@PathVariable(value= "id")UUID id){
-        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
+    public ResponseEntity<Object> DeleteParkingSpot(@PathVariable(value = "id") UUID id) {
+        // Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
 //        if(!parkingSpotModelOptional.isPresent()){
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found!");
 //        }
-        parkingSpotServices.delete(parkingSpotModelOptional.get());
+        // parkingSpotServices.delete(parkingSpotModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Parking Spot delete successfully");
 
     }
@@ -80,19 +60,22 @@ public class ParkingSpotController {
     @PutMapping("/{id}" +
             "")
     public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
-                                                    @RequestBody @Valid ParkingSpotDto parkingSpotDto){
-        try {
-            Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
-//        if (!parkingSpotModelOptional.isPresent()) {
-//            return ResponseEntity.ok(parkingSpotServices.findById(id));
-//        }
-            var parkingSpotModel = new ParkingSpotModel();
-            BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-            parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
-            parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
-            return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.save(parkingSpotModel));
-        } catch(BadRequestException ex){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-            }
+                                                    @RequestBody @Valid ParkingSpotDto parkingSpotDto) {
+//        try {
+//            Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
+////        if (!parkingSpotModelOptional.isPresent()) {
+////            return ResponseEntity.ok(parkingSpotServices.findById(id));
+////        }
+//            var parkingSpotModel = new ParkingSpotModel();
+//            BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
+//            parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
+//            parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
+//            return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.save(parkingSpotModel));
+//        } catch(BadRequestException ex){
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+//            }
+        return null;
     }
-}
+
+    }
+

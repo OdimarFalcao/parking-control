@@ -1,8 +1,6 @@
 package com.api.parkingcontrol.handler;
 
-import com.api.parkingcontrol.exception.BadRequestException;
-import com.api.parkingcontrol.exception.BadRequestExceptionDetails;
-import com.api.parkingcontrol.exception.ValidationExceptionDetails;
+import com.api.parkingcontrol.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,10 +15,10 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class RestExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<BadRequestExceptionDetails>
+    public ResponseEntity<ExceptionDetails>
     handlerBadRequestException(BadRequestException badRequestException){
         return new ResponseEntity<>(
-                BadRequestExceptionDetails.builder()
+                ExceptionDetails.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.BAD_REQUEST.value())
                         .title("BadRequestException, check the documentation")
@@ -51,4 +48,33 @@ public class RestExceptionHandler {
                         .build(),HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(GenericExceptionNotFound.class)
+    public ResponseEntity<ExceptionDetails>
+    NotFoundException(GenericExceptionNotFound ex){
+        return new ResponseEntity<>(
+                ValidationExceptionDetails.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .title("BadRequestException, check the documentation")
+                        .details(ex.getMessage())
+                        .developerMessage(ex.getMessage())
+                        .build(),HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(GenericConflictException.class)
+    public ResponseEntity<ExceptionDetails>
+    ConflictException(GenericConflictException ex){
+        return new ResponseEntity<>(
+                ValidationExceptionDetails.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .title("BadRequestException, check the documentation")
+                        .details(ex.getMessage())
+                        .developerMessage(ex.getMessage())
+                        .build(),HttpStatus.NOT_FOUND);
+
+    }
+
 }
