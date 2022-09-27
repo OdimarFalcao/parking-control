@@ -31,7 +31,7 @@ public class ParkingSpotController {
 
     @PostMapping
     public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotServices.save(parkingSpotDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotServices.savePSM(parkingSpotDto));
     }
 
     @GetMapping
@@ -57,24 +57,12 @@ public class ParkingSpotController {
 
     }
 
-    @PutMapping("/{id}" +
-            "")
+    @PutMapping("/{id}" +"")
     public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
                                                     @RequestBody @Valid ParkingSpotDto parkingSpotDto) {
-//        try {
-//            Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotServices.findById(id);
-////        if (!parkingSpotModelOptional.isPresent()) {
-////            return ResponseEntity.ok(parkingSpotServices.findById(id));
-////        }
-//            var parkingSpotModel = new ParkingSpotModel();
-//            BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-//            parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
-//            parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
-//            return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.save(parkingSpotModel));
-//        } catch(BadRequestException ex){
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-//            }
-        return null;
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotServices.update(id,parkingSpotDto));
+
     }
 
     }

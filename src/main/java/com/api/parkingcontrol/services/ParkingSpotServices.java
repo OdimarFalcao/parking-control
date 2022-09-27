@@ -8,14 +8,13 @@ import com.api.parkingcontrol.repositores.ParkingSpotRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,7 +26,7 @@ public class ParkingSpotServices {
         this.parkingSpotRepository = parkingSpotRepository;
     }
     @Transactional
-    public ParkingSpotModel save(ParkingSpotDto parkingSpotDto) {
+    public ParkingSpotModel savePSM(ParkingSpotDto parkingSpotDto) {
 
         ParkingSpotModel parkingSpotModel = new ParkingSpotModel();
 
@@ -43,6 +42,21 @@ public class ParkingSpotServices {
         }
         BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
         parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
+        return parkingSpotRepository.save(parkingSpotModel);
+    }
+
+    @Transactional
+    public ParkingSpotModel update(UUID id, ParkingSpotDto parkingSpotDto) {
+
+            Optional<ParkingSpotModel> parkingSpotModelOptional = Optional.ofNullable(parkingSpotRepository.findById(id).
+                    orElseThrow(() -> new GenericExceptionNotFound("Parking Spot Model Not Found!")));
+
+
+
+        var parkingSpotModel = new ParkingSpotModel();
+            BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
+            parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
+            parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
         return parkingSpotRepository.save(parkingSpotModel);
     }
 
