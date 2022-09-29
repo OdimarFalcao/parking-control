@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -28,7 +29,6 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpotModel, U
 
     @Query(nativeQuery = true, value = "SELECT  *FROM TB_PARKING_SPOT WHERE block=?1 ")
     List<ParkingSpotModel> findAllParkingSpot(String block);
-
 
 
 }

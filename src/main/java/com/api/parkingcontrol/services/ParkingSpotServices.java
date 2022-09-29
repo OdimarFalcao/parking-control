@@ -8,6 +8,8 @@ import com.api.parkingcontrol.repositores.ParkingSpotRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -82,8 +84,12 @@ public class ParkingSpotServices {
 
 
     @Transactional
-    public void delete(ParkingSpotModel parkingSpotModel) {
-        parkingSpotRepository.delete(parkingSpotModel);
+    public ResponseEntity<String> delete(UUID id) {
+        Optional<ParkingSpotModel> parkingSpotModelOptional = Optional.ofNullable(parkingSpotRepository.findById(id).
+                orElseThrow(() -> new GenericExceptionNotFound("Parking Spot Model Not Found!")));
+        parkingSpotRepository.delete(parkingSpotModelOptional.get());
+
+        return ResponseEntity.status(HttpStatus.OK).body("Delete Sucefully!");
     }
 
     public List<ParkingSpotModel> findAllParkingSpot() {
