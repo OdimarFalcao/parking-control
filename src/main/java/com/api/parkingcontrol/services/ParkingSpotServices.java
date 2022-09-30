@@ -50,15 +50,12 @@ public class ParkingSpotServices {
     @Transactional
     public ParkingSpotModel update(UUID id, ParkingSpotDto parkingSpotDto) {
 
-            Optional<ParkingSpotModel> parkingSpotModelOptional = Optional.ofNullable(parkingSpotRepository.findById(id).
-                    orElseThrow(() -> new GenericExceptionNotFound("Parking Spot Model Not Found!")));
+        ParkingSpotModel parkingSpotModel = findById(id);
 
 
-
-        var parkingSpotModel = new ParkingSpotModel();
             BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
-            parkingSpotModel.setId(parkingSpotModelOptional.get().getId());
-            parkingSpotModel.setRegistrationDate(parkingSpotModelOptional.get().getRegistrationDate());
+            parkingSpotModel.setId(parkingSpotModel.getId());
+            parkingSpotModel.setRegistrationDate(parkingSpotModel.getRegistrationDate());
         return parkingSpotRepository.save(parkingSpotModel);
     }
 
@@ -101,6 +98,11 @@ public class ParkingSpotServices {
 
     public List<ParkingSpotModel> findAllParkingSpotByBlock(String block) {
         return parkingSpotRepository.findAllParkingSpot(block);
+    }
+
+    public List<ParkingSpotModel> findPSMblocks(String block) {
+             return parkingSpotRepository.findByblock(block);
+
     }
 
 

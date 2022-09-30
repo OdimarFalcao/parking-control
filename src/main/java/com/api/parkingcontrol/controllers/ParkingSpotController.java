@@ -20,11 +20,9 @@ import java.util.UUID;
 
 public class ParkingSpotController {
     final ParkingSpotServices parkingSpotServices;
-    final ParkingSpotRepository parkingSpotRepository;
 
-    public ParkingSpotController(ParkingSpotServices parkingSpotServices, ParkingSpotRepository parkingSpotRepository) {
+    public ParkingSpotController(ParkingSpotServices parkingSpotServices) {
         this.parkingSpotServices = parkingSpotServices;
-        this.parkingSpotRepository = parkingSpotRepository;
     }
 
     @GetMapping("/list")
@@ -39,7 +37,7 @@ public class ParkingSpotController {
 
     @GetMapping("/list/{block}")
     public List<ParkingSpotModel> findParkingSpotBlock(@PathVariable("block") String block) {
-        return  parkingSpotRepository.findByblock(block);
+        return  parkingSpotServices.findPSMblocks(block);
     }
 
 
@@ -70,7 +68,7 @@ public class ParkingSpotController {
 
     }
 
-    @PutMapping("/{id}" +"")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
                                                     @RequestBody @Valid ParkingSpotDto parkingSpotDto) {
 
