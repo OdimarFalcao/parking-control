@@ -31,4 +31,5 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpotModel, U
     List<ParkingSpotModel> findAllParkingSpot(String block);
 
 
+    List<ParkingSpotModel> findByblock(String block);
 }

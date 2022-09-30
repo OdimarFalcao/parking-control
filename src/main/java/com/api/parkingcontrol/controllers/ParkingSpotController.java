@@ -1,6 +1,7 @@
 package com.api.parkingcontrol.controllers;
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
 import com.api.parkingcontrol.models.ParkingSpotModel;
+import com.api.parkingcontrol.repositores.ParkingSpotRepository;
 import com.api.parkingcontrol.services.ParkingSpotServices;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,9 +20,32 @@ import java.util.UUID;
 
 public class ParkingSpotController {
     final ParkingSpotServices parkingSpotServices;
+    final ParkingSpotRepository parkingSpotRepository;
 
-    public ParkingSpotController(ParkingSpotServices parkingSpotServices) {
+    public ParkingSpotController(ParkingSpotServices parkingSpotServices, ParkingSpotRepository parkingSpotRepository) {
         this.parkingSpotServices = parkingSpotServices;
+        this.parkingSpotRepository = parkingSpotRepository;
+    }
+
+    @GetMapping("/list")
+    public List<ParkingSpotModel> findAllParkingSpot() {
+        return  parkingSpotServices.findAllParkingSpot();
+    }
+
+//    @GetMapping("/list/{block}")
+//    public List<ParkingSpotModel> findAllParkingSpotBlock(@PathVariable("block") String block) {
+//        return  parkingSpotServices.findAllParkingSpotByBlock(block);
+//    }
+
+    @GetMapping("/list/{block}")
+    public List<ParkingSpotModel> findParkingSpotBlock(@PathVariable("block") String block) {
+        return  parkingSpotRepository.findByblock(block);
+    }
+
+
+    @GetMapping("/listBlock")
+    public List<String> findAllBlock() {
+        return  parkingSpotServices.findAllBlock();
     }
 
     @PostMapping

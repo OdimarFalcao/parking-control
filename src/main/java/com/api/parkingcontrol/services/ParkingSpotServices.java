@@ -88,7 +88,6 @@ public class ParkingSpotServices {
         Optional<ParkingSpotModel> parkingSpotModelOptional = Optional.ofNullable(parkingSpotRepository.findById(id).
                 orElseThrow(() -> new GenericExceptionNotFound("Parking Spot Model Not Found!")));
         parkingSpotRepository.delete(parkingSpotModelOptional.get());
-
         return ResponseEntity.status(HttpStatus.OK).body("Delete Sucefully!");
     }
 
@@ -103,4 +102,10 @@ public class ParkingSpotServices {
     public List<ParkingSpotModel> findAllParkingSpotByBlock(String block) {
         return parkingSpotRepository.findAllParkingSpot(block);
     }
+
+
+//    public List<ParkingSpotModel> findPSMB(String block) {
+//        return parkingSpotRepository.findByBlock(block);
+//
+//    }
 }
