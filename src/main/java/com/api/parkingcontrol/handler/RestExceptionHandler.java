@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler(BadRequestException.class)  
     public ResponseEntity<ExceptionDetails>
     handlerBadRequestException(BadRequestException badRequestException){
         return new ResponseEntity<>(
@@ -27,7 +27,6 @@ public class RestExceptionHandler {
                         .build(),HttpStatus.BAD_REQUEST);
 
     }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationExceptionDetails>
     handlerMethodArgumentNotValidException(MethodArgumentNotValidException argumentNotValidException){

@@ -1,4 +1,5 @@
 package com.api.parkingcontrol.controllers;
+import com.api.parkingcontrol.dtos.ParkingSpoTDtoResponse;
 import com.api.parkingcontrol.dtos.ParkingSpotDto;
 import com.api.parkingcontrol.models.ParkingSpotModel;
 import com.api.parkingcontrol.repositores.ParkingSpotRepository;
@@ -53,13 +54,12 @@ public class ParkingSpotController {
 
     @GetMapping
     public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.findAll(pageable));
+        return  ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.findAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ParkingSpotModel> getOneParkingSpot(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<ParkingSpoTDtoResponse> getOneParkingSpot(@PathVariable(value = "id") UUID id) {
         return ResponseEntity.ok(parkingSpotServices.findById(id));
-
     }
 
     @DeleteMapping("/{id}")
