@@ -1,8 +1,7 @@
 package com.api.parkingcontrol.controllers;
 import com.api.parkingcontrol.dtos.ParkingSpoTDtoResponse;
-import com.api.parkingcontrol.dtos.ParkingSpotDto;
+import com.api.parkingcontrol.dtos.ParkingSpotDtoRequest;
 import com.api.parkingcontrol.models.ParkingSpotModel;
-import com.api.parkingcontrol.repositores.ParkingSpotRepository;
 import com.api.parkingcontrol.services.ParkingSpotServices;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +47,7 @@ public class ParkingSpotController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDto parkingSpotDto) {
+    public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDtoRequest parkingSpotDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotServices.savePSM(parkingSpotDto));
     }
 
@@ -69,8 +68,8 @@ public class ParkingSpotController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id,
-                                                    @RequestBody @Valid ParkingSpotDto parkingSpotDto) {
+    public ResponseEntity<ParkingSpoTDtoResponse> updateParkingSpot(@PathVariable(value = "id") UUID id,
+                                                    @RequestBody @Valid ParkingSpotDtoRequest parkingSpotDto) {
 
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.update(id,parkingSpotDto));
 

@@ -1,7 +1,7 @@
 package com.api.parkingcontrol.services;
 
 import com.api.parkingcontrol.dtos.ParkingSpoTDtoResponse;
-import com.api.parkingcontrol.dtos.ParkingSpotDto;
+import com.api.parkingcontrol.dtos.ParkingSpotDtoRequest;
 import com.api.parkingcontrol.exception.GenericConflictException;
 import com.api.parkingcontrol.exception.GenericExceptionNotFound;
 import com.api.parkingcontrol.models.ParkingSpotModel;
@@ -34,7 +34,7 @@ public class ParkingSpotServices {
     }
 
     @Transactional
-    public ParkingSpotModel savePSM(ParkingSpotDto parkingSpotDto) {
+    public ParkingSpotModel savePSM(ParkingSpotDtoRequest parkingSpotDto) {
 
         ParkingSpotModel parkingSpotModel = new ParkingSpotModel();
 
@@ -54,15 +54,24 @@ public class ParkingSpotServices {
     }
 
     @Transactional
-    public ParkingSpotModel update(UUID id, ParkingSpotDto parkingSpotDto) {
+    public ParkingSpoTDtoResponse update(UUID id, ParkingSpotDtoRequest parkingSpotDto) {
 
 
-        ParkingSpotModel parkingSpotModel = parkingSpotRepository.findById(id).get();
+        ParkingSpotModel parkingSpotModel = parkingSpotRepository.findById(id).
+                orElseThrow(() -> new GenericExceptionNotFound("Parking Spot Model Not Found!"));
 
             BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
             parkingSpotModel.setId(parkingSpotModel.getId());
             parkingSpotModel.setRegistrationDate(parkingSpotModel.getRegistrationDate());
-        return parkingSpotRepository.save(parkingSpotModel);
+
+        return convertEntity(parkingSpotModel);
+    }
+
+    public ParkingSpoTDtoResponse findById(UUID id) {
+        ParkingSpotModel parkingSpotModel = parkingSpotRepository.findById(id).
+                orElseThrow(() -> new GenericExceptionNotFound("Parking Spot Model Not Found!"));
+
+        return convertEntity(parkingSpotModel);
     }
 
     public boolean existsByLicensePlateCar(String LicensePlateCar){
@@ -80,13 +89,7 @@ public class ParkingSpotServices {
         return parkingSpotRepository.findAll(pageable);
     }
 
-    public ParkingSpoTDtoResponse findById(UUID id) {
-        ParkingSpotModel parkingSpotModel =
-         parkingSpotRepository.findById(id).
-                orElseThrow(() -> new GenericExceptionNotFound("Parking Spot Model Not Found!"));
 
-        return convertEntity(parkingSpotModel);
-    }
 
 
     @Transactional
@@ -115,18 +118,8 @@ public class ParkingSpotServices {
     }
 
     public ParkingSpoTDtoResponse convertEntity(ParkingSpotModel parkingSpotModel){
-//        ParkingSpoTDtoResponse parkingSpoTDtoResponse = new ParkingSpoTDtoResponse();
-//        parkingSpoTDtoResponse.setResponsibleName(parkingSpotModel.getResponsibleName());
-//        return parkingSpoTDtoResponse;
-
        return modelMapper.map(parkingSpotModel, ParkingSpoTDtoResponse.class);
-
     }
 
 
-
-//    public List<ParkingSpotModel> findPSMB(String block) {
-//        return parkingSpotRepository.findByBlock(block);
-//
-//    }
 }
