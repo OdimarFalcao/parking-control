@@ -40,25 +40,24 @@ public class ParkingSpotController {
         return  parkingSpotServices.findPSMblocks(block);
     }
 
+    @GetMapping
+    public ResponseEntity<Page<ParkingSpoTDtoResponse>> getAllParkingSpots
+            (@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return  ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.findAll(pageable));
+    }
 
     @GetMapping("/listBlock")
     public List<String> findAllBlock() {
         return  parkingSpotServices.findAllBlock();
     }
 
-    @PostMapping
-    public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDtoRequest parkingSpotDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotServices.savePSM(parkingSpotDto));
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return  ResponseEntity.status(HttpStatus.OK).body(parkingSpotServices.findAll(pageable));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ParkingSpoTDtoResponse> getOneParkingSpot(@PathVariable(value = "id") UUID id) {
         return ResponseEntity.ok(parkingSpotServices.findById(id));
+    }
+    @PostMapping
+    public ResponseEntity<Object> saveParkingSpot(@RequestBody @Valid ParkingSpotDtoRequest parkingSpotDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(parkingSpotServices.savePSM(parkingSpotDto));
     }
 
     @DeleteMapping("/{id}")

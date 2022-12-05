@@ -14,13 +14,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ParkingSpotServices {
@@ -74,6 +74,7 @@ public class ParkingSpotServices {
         return convertEntity(parkingSpotModel);
     }
 
+
     public boolean existsByLicensePlateCar(String LicensePlateCar){
         return parkingSpotRepository.existsByLicensePlateCar(LicensePlateCar);
     }
@@ -85,12 +86,9 @@ public class ParkingSpotServices {
     public boolean existsByApartmentAndBlock(String apartment,String block){
         return  parkingSpotRepository.existsByApartmentAndBlock(apartment,block);
     }
-    public Page<ParkingSpotModel> findAll(Pageable pageable) {
-        return parkingSpotRepository.findAll(pageable);
+    public Page<ParkingSpoTDtoResponse> findAll(Pageable pageable) {
+        return parkingSpoTDtoResponseList(parkingSpotRepository.findAll(pageable));
     }
-
-
-
 
     @Transactional
     public ResponseEntity<String> delete(UUID id) {
@@ -114,12 +112,19 @@ public class ParkingSpotServices {
 
     public List<ParkingSpotModel> findPSMblocks(String block) {
              return parkingSpotRepository.findByblock(block);
-
     }
 
     public ParkingSpoTDtoResponse convertEntity(ParkingSpotModel parkingSpotModel){
        return modelMapper.map(parkingSpotModel, ParkingSpoTDtoResponse.class);
     }
+
+    public Page<ParkingSpoTDtoResponse> parkingSpoTDtoResponseList(Page<ParkingSpotModel> parkingSpotModels){
+        List<ParkingSpoTDtoResponse> lista = parkingSpotModels.stream()
+                .map(this::convertEntity)
+                .collect(Collectors.toList());
+        return (Page<ParkingSpoTDtoResponse>) lista;
+    }
+
 
 
 }

@@ -1,6 +1,4 @@
 package com.api.parkingcontrol.exception;
-
-
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 

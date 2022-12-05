@@ -52,7 +52,7 @@ public class RestExceptionHandler {
     public ResponseEntity<ExceptionDetails>
     NotFoundException(GenericExceptionNotFound ex){
         return new ResponseEntity<>(
-                ValidationExceptionDetails.builder()
+                ExceptionDetails.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.NOT_FOUND.value())
                         .title("BadRequestException, check the documentation")
@@ -66,7 +66,7 @@ public class RestExceptionHandler {
     public ResponseEntity<ExceptionDetails>
     ConflictException(GenericConflictException ex){
         return new ResponseEntity<>(
-                ValidationExceptionDetails.builder()
+                ExceptionDetails.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.NOT_FOUND.value())
                         .title("BadRequestException, check the documentation")
